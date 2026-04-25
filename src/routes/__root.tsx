@@ -29,14 +29,17 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Inmuebles Coral | Terrenos en Puerto Escondido, Oaxaca" },
+      {
+        name: "description",
+        content:
+          "Desarrollos inmobiliarios en Puerto Escondido, Oaxaca. Lotes residenciales, semi-urbanizados y de inversión con permisos vigentes y financiamiento sin buró.",
+      },
+      { name: "author", content: "Inmuebles Coral" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:locale", content: "es_MX" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@inmueblescoral" },
     ],
     links: [
       {
