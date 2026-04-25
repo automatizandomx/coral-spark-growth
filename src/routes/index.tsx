@@ -1,12 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
+import { getPageBySlug, getPostsByCategory, metaOr, titleOr, type WPPost } from "@/lib/wp";
 import heroCoast from "@/assets/hero-coast.jpg";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [hero, devs] = await Promise.all([
+      getPageBySlug("hero-home"),
+      getPostsByCategory("desarrollos", 4),
+    ]);
+    return { hero, devs };
+  },
+  staleTime: 60_000,
   head: () => ({
     meta: [
       { title: "Inmuebles Coral | Terrenos en Puerto Escondido, Oaxaca" },
@@ -31,7 +40,19 @@ export const Route = createFileRoute("/")({
 const WHATSAPP_BASE = "https://wa.me/529541388112?text=";
 const wa = (txt: string) => `${WHATSAPP_BASE}${encodeURIComponent(txt)}`;
 
-const desarrollos = [
+type Desarrollo = {
+  badge: string | null;
+  type: string;
+  title: string;
+  desc: string;
+  size: string;
+  location: string;
+  price: string;
+  icon: string;
+  img: string;
+};
+
+const desarrollosFallback: Desarrollo[] = [
   {
     badge: "Premium",
     type: "Residencial",
@@ -78,6 +99,8 @@ const desarrollos = [
   },
 ];
 
+const fallbackImgs = [project3, project1, project2];
+
 const testimonios = [
   {
     initials: "PJ",
@@ -117,7 +140,40 @@ const testimonios = [
   },
 ];
 
+function stripTags(s: string): string {
+  return s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
+}
+
 function HomePage() {
+  const { hero, devs } = Route.useLoaderData();
+
+  // Map WordPress posts in the "desarrollos" category to the card shape.
+  // Custom fields supported via shortcodes in the post body. See WORDPRESS_SETUP.md.
+  const desarrollos: Desarrollo[] =
+    devs.length > 0
+      ? devs.map((p: WPPost, i: number) => ({
+          badge: metaOr(p, "badge", "") || null,
+          type: metaOr(p, "type", "Desarrollo"),
+          title: titleOr(p, "Desarrollo"),
+          desc: stripTags(p.excerpt) || stripTags(p.content).slice(0, 180),
+          size: metaOr(p, "size", "Desde 200 m²"),
+          location: metaOr(p, "location", "Puerto Escondido"),
+          price: metaOr(p, "price", "Consultar"),
+          icon: metaOr(p, "icon", "fa-home"),
+          img: p.featured_image || fallbackImgs[i % fallbackImgs.length],
+        }))
+      : desarrollosFallback;
+
+  const heroBadge = metaOr(hero, "badge", "5.0 estrellas en Google — 21 reseñas verificadas");
+  const heroTitleLead = metaOr(hero, "title_lead", "Tu lugar en la costa");
+  const heroTitleEm = metaOr(hero, "title_em", "oaxaqueña");
+  const heroTitleTrail = metaOr(hero, "title_trail", "empieza aquí.");
+  const heroParagraph = metaOr(
+    hero,
+    "paragraph",
+    "Diseñamos, planificamos y ejecutamos cada desarrollo desde cero. No somos intermediarios — somos los creadores de tu futuro patrimonio en Puerto Escondido.",
+  );
+
   return (
     <SiteLayout>
       {/* HERO */}
@@ -133,18 +189,16 @@ function HomePage() {
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 pt-32 pb-20 w-full">
           <div className="animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/15 backdrop-blur-md rounded-full text-[13px] text-white/85 mb-8">
-              <i className="fas fa-star text-gold" /> 5.0 estrellas en Google — 21 reseñas verificadas
+              <i className="fas fa-star text-gold" /> {heroBadge}
             </div>
             <h1 className="text-[clamp(40px,6vw,72px)] font-extrabold text-white leading-[1.08] tracking-tight mb-6 max-w-3xl">
-              Tu lugar en la costa{" "}
-              <em className="not-italic text-white/55">oaxaqueña</em>
+              {heroTitleLead}{" "}
+              <em className="not-italic text-white/55">{heroTitleEm}</em>
               <br />
-              empieza aquí.
+              {heroTitleTrail}
             </h1>
             <p className="text-[19px] text-white/75 leading-relaxed max-w-xl mb-10">
-              Diseñamos, planificamos y ejecutamos cada desarrollo desde cero.
-              No somos intermediarios — somos los creadores de tu futuro
-              patrimonio en Puerto Escondido.
+              {heroParagraph}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -165,10 +219,10 @@ function HomePage() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-10 border-t border-white/10 max-w-3xl">
               {[
-                { v: "13+", l: "Desarrollos" },
-                { v: "647+", l: "Familias felices" },
-                { v: "200m²", l: "Lotes desde" },
-                { v: "$242K", l: "Precio desde" },
+                { v: metaOr(hero, "stat1_v", "13+"), l: metaOr(hero, "stat1_l", "Desarrollos") },
+                { v: metaOr(hero, "stat2_v", "647+"), l: metaOr(hero, "stat2_l", "Familias felices") },
+                { v: metaOr(hero, "stat3_v", "200m²"), l: metaOr(hero, "stat3_l", "Lotes desde") },
+                { v: metaOr(hero, "stat4_v", "$242K"), l: metaOr(hero, "stat4_l", "Precio desde") },
               ].map((s) => (
                 <div key={s.l}>
                   <div className="text-[36px] font-bold text-white leading-none">

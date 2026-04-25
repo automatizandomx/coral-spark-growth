@@ -1,11 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
+import { getPostsByCategory, metaOr, titleOr, type WPPost } from "@/lib/wp";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
 
 export const Route = createFileRoute("/desarrollos")({
+  loader: async () => ({
+    devs: await getPostsByCategory("desarrollos", 30),
+  }),
+  staleTime: 60_000,
   head: () => ({
     meta: [
       { title: "Desarrollos en Puerto Escondido | Inmuebles Coral" },
@@ -98,7 +103,33 @@ const proyectos = [
   },
 ];
 
+function stripTags(s: string): string {
+  return s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
+}
+
+const fallbackImgs = [project3, project1, project2];
+
 function DesarrollosPage() {
+  const { devs } = Route.useLoaderData();
+
+  // Use WordPress posts when available, otherwise the static fallback list.
+  const proyectosFinal = devs.length > 0
+    ? devs.map((p: WPPost, i: number) => ({
+        title: titleOr(p, "Desarrollo"),
+        type: metaOr(p, "type", "Desarrollo"),
+        badge: metaOr(p, "badge", "") || null,
+        desc: stripTags(p.excerpt) || stripTags(p.content).slice(0, 200),
+        location: metaOr(p, "location", "Puerto Escondido"),
+        size: metaOr(p, "size", "200 m²"),
+        price: metaOr(p, "price", "Consultar"),
+        img: p.featured_image || fallbackImgs[i % fallbackImgs.length],
+        features: metaOr(p, "features", "")
+          .split("|")
+          .map((f) => f.trim())
+          .filter(Boolean),
+      }))
+    : proyectos;
+
   return (
     <SiteLayout>
       {/* HERO compacto */}
@@ -122,7 +153,8 @@ function DesarrollosPage() {
       <section className="py-24">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {proyectos.map((p) => (
+            {proyectosFinal.map((p: typeof proyectosFinal[number]) => (
+
               <article
                 key={p.title}
                 className="bg-white border border-gray-4 rounded-2xl overflow-hidden hover:-translate-y-2 hover:shadow-elegant hover:border-transparent transition-all duration-300"
@@ -146,7 +178,7 @@ function DesarrollosPage() {
                   </div>
                   <p className="text-sm text-gray-2 leading-relaxed mb-5">{p.desc}</p>
                   <div className="flex flex-wrap gap-2 mb-5">
-                    {p.features.map((f) => (
+                    {p.features.map((f: string) => (
                       <span key={f} className="text-[12px] px-2.5 py-1 bg-gray-5 text-gray-1 rounded-full font-medium">
                         {f}
                       </span>
