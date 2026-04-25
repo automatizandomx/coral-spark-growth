@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZenitRouteImport } from './routes/zenit'
+import { Route as NosotrosRouteImport } from './routes/nosotros'
+import { Route as DesarrollosRouteImport } from './routes/desarrollos'
+import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ZenitRoute = ZenitRouteImport.update({
+  id: '/zenit',
+  path: '/zenit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NosotrosRoute = NosotrosRouteImport.update({
+  id: '/nosotros',
+  path: '/nosotros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesarrollosRoute = DesarrollosRouteImport.update({
+  id: '/desarrollos',
+  path: '/desarrollos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,72 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contacto': typeof ContactoRoute
+  '/desarrollos': typeof DesarrollosRoute
+  '/nosotros': typeof NosotrosRoute
+  '/zenit': typeof ZenitRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contacto': typeof ContactoRoute
+  '/desarrollos': typeof DesarrollosRoute
+  '/nosotros': typeof NosotrosRoute
+  '/zenit': typeof ZenitRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contacto': typeof ContactoRoute
+  '/desarrollos': typeof DesarrollosRoute
+  '/nosotros': typeof NosotrosRoute
+  '/zenit': typeof ZenitRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/contacto' | '/desarrollos' | '/nosotros' | '/zenit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/contacto' | '/desarrollos' | '/nosotros' | '/zenit'
+  id: '__root__' | '/' | '/contacto' | '/desarrollos' | '/nosotros' | '/zenit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContactoRoute: typeof ContactoRoute
+  DesarrollosRoute: typeof DesarrollosRoute
+  NosotrosRoute: typeof NosotrosRoute
+  ZenitRoute: typeof ZenitRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/zenit': {
+      id: '/zenit'
+      path: '/zenit'
+      fullPath: '/zenit'
+      preLoaderRoute: typeof ZenitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nosotros': {
+      id: '/nosotros'
+      path: '/nosotros'
+      fullPath: '/nosotros'
+      preLoaderRoute: typeof NosotrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/desarrollos': {
+      id: '/desarrollos'
+      path: '/desarrollos'
+      fullPath: '/desarrollos'
+      preLoaderRoute: typeof DesarrollosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +121,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContactoRoute: ContactoRoute,
+  DesarrollosRoute: DesarrollosRoute,
+  NosotrosRoute: NosotrosRoute,
+  ZenitRoute: ZenitRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
