@@ -1,11 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
+import { getPostsByCategory, metaOr, titleOr } from "@/lib/wp";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
 
 export const Route = createFileRoute("/desarrollos")({
+  loader: async () => ({
+    devs: await getPostsByCategory("desarrollos", 30),
+  }),
+  staleTime: 60_000,
   head: () => ({
     meta: [
       { title: "Desarrollos en Puerto Escondido | Inmuebles Coral" },
