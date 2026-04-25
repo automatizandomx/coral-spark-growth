@@ -61,21 +61,47 @@ const proceso = [
 ];
 
 function NosotrosPage() {
+  const { page } = Route.useLoaderData();
+
+  const heroBadge = metaOr(page, "hero_badge", "Sobre Nosotros");
+  const heroTitleLead = metaOr(page, "hero_title_lead", "No somos intermediarios.");
+  const heroTitleEm = metaOr(page, "hero_title_em", "Somos los creadores.");
+  const heroParagraph = metaOr(
+    page,
+    "hero_paragraph",
+    "Diseñamos, planificamos y ejecutamos cada desarrollo desde cero, pensando en el bienestar de quienes lo habitarán.",
+  );
+  const stat = metaOr(page, "stat", "+647");
+  const statLabel = metaOr(page, "stat_label", "Familias felices en la costa");
+  const sectionTitle = metaOr(
+    page,
+    "section_title",
+    "Sabemos lo que es irse lejos a buscar lo que en casa no había.",
+  );
+  const quote = metaOr(
+    page,
+    "quote",
+    "Somos de aquí. Conocemos esta tierra. Y estamos contigo desde el primer recorrido hasta el acta de posesión a tu nombre.",
+  );
+
+  // Default fallback story (used when the WP page has no body content)
+  const defaultStory = `<p>Omar Ramírez nació en Puerto Escondido. Estudió en la Ciudad de México, trabajó en lo que encontró, y un día regresó a Oaxaca sin dinero y con las manos vacías. Conoce ese camino. Sabe lo que cuesta construir algo desde cero, lejos de donde uno creció.</p><p>De vuelta en la costa, encontró su lugar en el mundo inmobiliario. Aprendió el negocio desde adentro: los recorridos, los trámites, las escrituras, los fraccionamientos. <strong>Cada detalle.</strong> Años después, junto a su esposa <strong>Isis Santana</strong>, fundó Inmuebles Coral con una convicción clara: que quienes trabajan duro merecen tener tierra propia en el lugar más hermoso de México.</p>`;
+  const story = contentOr(page, defaultStory);
+
   return (
     <SiteLayout>
       {/* HERO */}
       <section className="bg-gradient-hero pt-40 pb-20 text-white">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="text-[13px] font-semibold uppercase tracking-[2px] text-teal-light mb-4">
-            Sobre Nosotros
+            {heroBadge}
           </div>
           <h1 className="text-[clamp(40px,5vw,64px)] font-extrabold tracking-tight mb-6 max-w-3xl">
-            No somos intermediarios.<br />
-            <em className="not-italic text-white/55">Somos los creadores.</em>
+            {heroTitleLead}<br />
+            <em className="not-italic text-white/55">{heroTitleEm}</em>
           </h1>
           <p className="text-lg text-white/70 max-w-2xl leading-relaxed">
-            Diseñamos, planificamos y ejecutamos cada desarrollo desde cero,
-            pensando en el bienestar de quienes lo habitarán.
+            {heroParagraph}
           </p>
         </div>
       </section>
