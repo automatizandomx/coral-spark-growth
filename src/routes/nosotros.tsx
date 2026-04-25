@@ -1,9 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
+import { WPContent } from "@/components/site/WPContent";
+import { getPageBySlug, metaOr, contentOr } from "@/lib/wp";
 import aboutTeam from "@/assets/about-team.jpg";
 
 export const Route = createFileRoute("/nosotros")({
+  loader: async () => ({
+    page: await getPageBySlug("nosotros"),
+  }),
+  staleTime: 60_000,
   head: () => ({
     meta: [
       { title: "Sobre Nosotros | Inmuebles Coral Puerto Escondido" },
