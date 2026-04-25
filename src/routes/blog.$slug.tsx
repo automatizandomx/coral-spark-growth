@@ -135,14 +135,17 @@ function PostPage() {
 
           {Object.keys(post.tags).length > 0 && (
             <div className="mt-16 pt-8 border-t border-gray-4 flex flex-wrap gap-2">
-              {Object.values(post.tags).map((t) => (
-                <span
-                  key={t.slug}
-                  className="text-xs px-3 py-1 bg-gray-5 text-gray-2 rounded-full font-medium"
-                >
-                  #{t.name}
-                </span>
-              ))}
+              {Object.values(post.tags).map((t) => {
+                const tag = t as { slug: string; name: string };
+                return (
+                  <span
+                    key={tag.slug}
+                    className="text-xs px-3 py-1 bg-gray-5 text-gray-2 rounded-full font-medium"
+                  >
+                    #{tag.name}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>

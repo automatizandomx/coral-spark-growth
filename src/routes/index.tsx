@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
-import { getPageBySlug, getPostsByCategory, metaOr, titleOr } from "@/lib/wp";
+import { getPageBySlug, getPostsByCategory, metaOr, titleOr, type WPPost } from "@/lib/wp";
 import heroCoast from "@/assets/hero-coast.jpg";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
@@ -151,7 +151,7 @@ function HomePage() {
   // Custom fields supported via shortcodes in the post body. See WORDPRESS_SETUP.md.
   const desarrollos: Desarrollo[] =
     devs.length > 0
-      ? devs.map((p, i) => ({
+      ? devs.map((p: WPPost, i: number) => ({
           badge: metaOr(p, "badge", "") || null,
           type: metaOr(p, "type", "Desarrollo"),
           title: titleOr(p, "Desarrollo"),

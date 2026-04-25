@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
-import { getBlogPosts, formatDate } from "@/lib/wp";
+import { getBlogPosts, formatDate, type WPPost } from "@/lib/wp";
 import heroCoast from "@/assets/hero-coast.jpg";
 
 export const Route = createFileRoute("/blog")({
@@ -99,7 +99,7 @@ function BlogPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-              {posts.map((p) => (
+              {posts.map((p: WPPost) => (
                 <Link
                   key={p.ID}
                   to="/blog/$slug"

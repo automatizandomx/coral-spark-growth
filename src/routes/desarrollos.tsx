@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
-import { getPostsByCategory, metaOr, titleOr } from "@/lib/wp";
+import { getPostsByCategory, metaOr, titleOr, type WPPost } from "@/lib/wp";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
@@ -114,7 +114,7 @@ function DesarrollosPage() {
 
   // Use WordPress posts when available, otherwise the static fallback list.
   const proyectosFinal = devs.length > 0
-    ? devs.map((p, i) => ({
+    ? devs.map((p: WPPost, i: number) => ({
         title: titleOr(p, "Desarrollo"),
         type: metaOr(p, "type", "Desarrollo"),
         badge: metaOr(p, "badge", "") || null,
@@ -153,7 +153,7 @@ function DesarrollosPage() {
       <section className="py-24">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {proyectosFinal.map((p) => (
+            {proyectosFinal.map((p: typeof proyectosFinal[number]) => (
 
               <article
                 key={p.title}
@@ -178,7 +178,7 @@ function DesarrollosPage() {
                   </div>
                   <p className="text-sm text-gray-2 leading-relaxed mb-5">{p.desc}</p>
                   <div className="flex flex-wrap gap-2 mb-5">
-                    {p.features.map((f) => (
+                    {p.features.map((f: string) => (
                       <span key={f} className="text-[12px] px-2.5 py-1 bg-gray-5 text-gray-1 rounded-full font-medium">
                         {f}
                       </span>
