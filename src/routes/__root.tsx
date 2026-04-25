@@ -40,6 +40,13 @@ export const Route = createRootRoute({
       { property: "og:locale", content: "es_MX" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@inmueblescoral" },
+      { property: "og:title", content: "Inmuebles Coral | Terrenos en Puerto Escondido, Oaxaca" },
+      { name: "twitter:title", content: "Inmuebles Coral | Terrenos en Puerto Escondido, Oaxaca" },
+      { name: "description", content: "Coral Sales Booster is a website designed to drive sales and generate leads for real estate businesses." },
+      { property: "og:description", content: "Coral Sales Booster is a website designed to drive sales and generate leads for real estate businesses." },
+      { name: "twitter:description", content: "Coral Sales Booster is a website designed to drive sales and generate leads for real estate businesses." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a0eaca3e-36a2-49ad-84e5-4483b8c2a77f/id-preview-c0cde09f--d752ec89-31bd-4f27-a756-dc7d8acb6e15.lovable.app-1777133614485.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a0eaca3e-36a2-49ad-84e5-4483b8c2a77f/id-preview-c0cde09f--d752ec89-31bd-4f27-a756-dc7d8acb6e15.lovable.app-1777133614485.png" },
     ],
     links: [
       {
