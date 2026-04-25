@@ -4,6 +4,24 @@ import { CTASection } from "@/components/site/CTASection";
 import { WPContent } from "@/components/site/WPContent";
 import { getPostBySlug, formatDate } from "@/lib/wp";
 
+function PostErrorComponent({ error }: { error: Error }) {
+  const router = useRouter();
+  return (
+    <SiteLayout>
+      <div className="pt-40 pb-20 max-w-2xl mx-auto px-6 text-center">
+        <h1 className="text-3xl font-bold text-dark mb-4">Algo salió mal</h1>
+        <p className="text-gray-2 mb-6">{error.message}</p>
+        <button
+          onClick={() => router.invalidate()}
+          className="inline-flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-full text-sm font-semibold"
+        >
+          Reintentar
+        </button>
+      </div>
+    </SiteLayout>
+  );
+}
+
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const post = await getPostBySlug(params.slug);
@@ -36,23 +54,7 @@ export const Route = createFileRoute("/blog/$slug")({
     };
   },
   component: PostPage,
-  errorComponent: ({ error }) => {
-    const router = useRouter();
-    return (
-      <SiteLayout>
-        <div className="pt-40 pb-20 max-w-2xl mx-auto px-6 text-center">
-          <h1 className="text-3xl font-bold text-dark mb-4">Algo salió mal</h1>
-          <p className="text-gray-2 mb-6">{error.message}</p>
-          <button
-            onClick={() => router.invalidate()}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-full text-sm font-semibold"
-          >
-            Reintentar
-          </button>
-        </div>
-      </SiteLayout>
-    );
-  },
+  errorComponent: PostErrorComponent,
   notFoundComponent: () => (
     <SiteLayout>
       <div className="pt-40 pb-20 max-w-2xl mx-auto px-6 text-center">
