@@ -118,9 +118,9 @@ function NosotrosPage() {
                 className="w-full h-[520px] object-cover rounded-3xl shadow-elegant"
               />
               <div className="absolute -bottom-8 -right-8 bg-white rounded-2xl p-6 shadow-elegant flex items-center gap-4 border border-gray-4">
-                <div className="text-[42px] font-bold text-teal leading-none">+647</div>
+                <div className="text-[42px] font-bold text-teal leading-none">{stat}</div>
                 <div className="text-[13px] text-gray-2 leading-tight max-w-[100px]">
-                  Familias felices en la costa
+                  {statLabel}
                 </div>
               </div>
             </div>
@@ -130,32 +130,16 @@ function NosotrosPage() {
                 Quiénes somos
               </div>
               <h2 className="text-[clamp(28px,4vw,42px)] font-bold text-dark leading-tight mb-6 tracking-tight">
-                Sabemos lo que es irse lejos a buscar lo que en casa no había.
+                {sectionTitle}
               </h2>
 
-              <div className="space-y-4 text-gray-2 leading-relaxed mb-8">
-                <p>
-                  Omar Ramírez nació en Puerto Escondido. Estudió en la Ciudad
-                  de México, trabajó en lo que encontró, y un día regresó a
-                  Oaxaca sin dinero y con las manos vacías. Conoce ese camino.
-                  Sabe lo que cuesta construir algo desde cero, lejos de donde
-                  uno creció.
-                </p>
-                <p>
-                  De vuelta en la costa, encontró su lugar en el mundo
-                  inmobiliario. Aprendió el negocio desde adentro: los
-                  recorridos, los trámites, las escrituras, los fraccionamientos.{" "}
-                  <strong className="text-dark">Cada detalle.</strong> Años después,
-                  junto a su esposa <strong className="text-dark">Isis Santana</strong>,
-                  fundó Inmuebles Coral con una convicción clara: que quienes
-                  trabajan duro merecen tener tierra propia en el lugar más
-                  hermoso de México.
-                </p>
-              </div>
+              <WPContent
+                html={story}
+                className="space-y-4 text-gray-2 leading-relaxed mb-8 [&_strong]:text-dark"
+              />
 
               <blockquote className="border-l-[3px] border-teal pl-5 py-3 my-6 bg-teal-light/40 rounded-r-lg italic text-dark text-base leading-relaxed">
-                "Somos de aquí. Conocemos esta tierra. Y estamos contigo desde
-                el primer recorrido hasta el acta de posesión a tu nombre."
+                "{quote}"
               </blockquote>
 
               <Link
