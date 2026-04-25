@@ -1,12 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CTASection } from "@/components/site/CTASection";
+import { getPageBySlug, getPostsByCategory, metaOr, titleOr } from "@/lib/wp";
 import heroCoast from "@/assets/hero-coast.jpg";
 import project1 from "@/assets/project-1.jpg";
 import project2 from "@/assets/project-2.jpg";
 import project3 from "@/assets/project-3.jpg";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [hero, devs] = await Promise.all([
+      getPageBySlug("hero-home"),
+      getPostsByCategory("desarrollos", 4),
+    ]);
+    return { hero, devs };
+  },
+  staleTime: 60_000,
   head: () => ({
     meta: [
       { title: "Inmuebles Coral | Terrenos en Puerto Escondido, Oaxaca" },
@@ -31,7 +40,19 @@ export const Route = createFileRoute("/")({
 const WHATSAPP_BASE = "https://wa.me/529541388112?text=";
 const wa = (txt: string) => `${WHATSAPP_BASE}${encodeURIComponent(txt)}`;
 
-const desarrollos = [
+type Desarrollo = {
+  badge: string | null;
+  type: string;
+  title: string;
+  desc: string;
+  size: string;
+  location: string;
+  price: string;
+  icon: string;
+  img: string;
+};
+
+const desarrollosFallback: Desarrollo[] = [
   {
     badge: "Premium",
     type: "Residencial",
@@ -77,6 +98,8 @@ const desarrollos = [
     img: project2,
   },
 ];
+
+const fallbackImgs = [project3, project1, project2];
 
 const testimonios = [
   {
